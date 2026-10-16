@@ -4,3 +4,4 @@ Thư mục này chứa ảnh demo của ứng dụng:
 - screenshot_*.png    : chụp màn hình giao diện Streamlit
 
 Xem hướng dẫn thêm ảnh chi tiết tại: docs/deployment.md (Mục 5.3)
+
