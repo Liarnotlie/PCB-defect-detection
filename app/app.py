@@ -29,7 +29,7 @@ st.set_page_config(
     page_title="PCB Component Detector",
     page_icon="🔬",
     layout="wide",
-    initial_sidebar_state="collapsed",
+    initial_sidebar_state="expanded",
 )
 
 # ══════════════════════════════════════════════════════
@@ -55,7 +55,33 @@ st.markdown(
         color: #1f2328 !important;
     }
 
-    /* Header bar ở trên cùng (nguồn gốc gây viền màu lạ) */
+    /* Sidebar — nền trắng sạch sẽ, viền phân cách rõ ràng */
+    [data-testid="stSidebar"] {
+        background-color: #f6f8fa !important;
+        border-right: 1px solid #d0d7de !important;
+    }
+    [data-testid="stSidebar"] * {
+        color: #1f2328 !important;
+    }
+
+    /* Radio button options trong sidebar */
+    [data-testid="stSidebar"] div[data-testid="stRadio"] label {
+        background-color: #ffffff !important;
+        border: 1px solid #d0d7de !important;
+        border-radius: 8px !important;
+        padding: 8px 12px !important;
+        margin-bottom: 6px !important;
+        font-weight: 600 !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+    }
+    [data-testid="stSidebar"] div[data-testid="stRadio"] label:hover {
+        background-color: #f0f7ff !important;
+        border-color: #0969da !important;
+        color: #0969da !important;
+    }
+
+    /* Header bar ở trên cùng */
     header[data-testid="stHeader"] {
         background: #ffffff !important;
         border-bottom: 1px solid #d0d7de !important;
@@ -63,53 +89,17 @@ st.markdown(
     }
     [data-testid="stToolbar"] { background: #ffffff !important; }
 
-    /* Ẩn sidebar + hamburger */
-    [data-testid="stSidebar"]          { display: none !important; }
-    #MainMenu                          { visibility: hidden !important; }
-    [data-testid="collapsedControl"]   { display: none !important; }
-    button[title="View fullscreen"]    { display: none !important; }
+    #MainMenu { visibility: hidden !important; }
+    button[title="View fullscreen"] { display: none !important; }
 
     /* Block container — padding */
     .block-container {
-        padding-top: 1rem !important;
+        padding-top: 1.5rem !important;
         padding-bottom: 2rem !important;
         max-width: 1200px;
     }
 
-    /* ── Top Navigation Bar ── */
-    .top-nav-bar {
-        display: flex;
-        align-items: center;
-        background: #ffffff;
-        border-bottom: 2px solid #e1e4e8;
-        padding: 4px 0 16px 0;
-        margin-bottom: 24px;
-        gap: 8px;
-    }
-    div[data-testid="stHorizontalBlock"] button[kind="primary"] {
-        background-color: #0969da !important;
-        color: #ffffff !important;
-        border: 1px solid #0969da !important;
-        font-weight: 700 !important;
-        font-size: 0.95rem !important;
-        padding: 8px 16px !important;
-        border-radius: 8px !important;
-        box-shadow: 0 2px 4px rgba(9,105,218,0.2) !important;
-    }
-    div[data-testid="stHorizontalBlock"] button[kind="secondary"] {
-        background-color: #f6f8fa !important;
-        color: #24292f !important;
-        border: 1px solid #d0d7de !important;
-        font-weight: 600 !important;
-        font-size: 0.95rem !important;
-        padding: 8px 16px !important;
-        border-radius: 8px !important;
-    }
-    div[data-testid="stHorizontalBlock"] button[kind="secondary"]:hover {
-        background-color: #eaeef2 !important;
-        color: #0969da !important;
-        border-color: #0969da !important;
-    }
+
 
     /* ── Hero banner ── */
     .hero {
@@ -408,35 +398,59 @@ def svg_to_img_tag(svg_str: str, alt: str = "") -> str:
 
 
 # ══════════════════════════════════════════════════════
-#  TOP NAVIGATION (Horizontal Button Bar)
+#  SIDEBAR NAVIGATION (Vertical Menu)
 # ══════════════════════════════════════════════════════
-PAGES = {
-    "home":    "🏠  Trang chủ",
-    "detect":  "🔍  Nhận diện",
-    "perf":    "📊  Hiệu suất mô hình",
-    "gallery": "🖼️  Gallery mẫu",
+with st.sidebar:
+    st.markdown(
+        """
+        <div style="text-align: center; padding: 12px 0 20px 0;">
+            <div style="font-size: 2.8rem; line-height: 1;">🔬</div>
+            <h2 style="font-size: 1.25rem; font-weight: 700; color: #0969da; margin: 8px 0 2px 0;">PCB Detector</h2>
+            <p style="font-size: 0.8rem; color: #57606a; margin: 0;">YOLOv8 Component Analysis</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown("**Menu điều hướng**")
+    MENU_OPTIONS = [
+        "🏠  Trang chủ",
+        "🔍  Nhận diện",
+        "📊  Hiệu suất mô hình",
+        "🖼️  Gallery mẫu",
+    ]
+
+    selected_menu = st.radio(
+        "Chọn chức năng",
+        options=MENU_OPTIONS,
+        index=0,
+        label_visibility="collapsed",
+    )
+
+    st.markdown("---")
+    st.markdown(
+        """
+        <div style="font-size: 0.78rem; color: #57606a; line-height: 1.6;">
+            <b>Thông tin hệ thống:</b><br>
+            • Mô hình: YOLOv8n (COCO Transfer)<br>
+            • Số lớp nhận diện: 10 linh kiện<br>
+            • Dữ liệu: 460 bo mạch in
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+PAGE_KEY_MAP = {
+    "🏠  Trang chủ": "home",
+    "🔍  Nhận diện": "detect",
+    "📊  Hiệu suất mô hình": "perf",
+    "🖼️  Gallery mẫu": "gallery",
 }
-
-if "current_page" not in st.session_state:
-    st.session_state["current_page"] = "home"
-
-nav_c1, nav_c2, nav_c3, nav_c4 = st.columns(4)
-nav_cols = [nav_c1, nav_c2, nav_c3, nav_c4]
-
-for col, (page_key, page_title) in zip(nav_cols, PAGES.items()):
-    with col:
-        is_active = (st.session_state["current_page"] == page_key)
-        button_type = "primary" if is_active else "secondary"
-        if st.button(page_title, key=f"nav_btn_{page_key}", use_container_width=True, type=button_type):
-            st.session_state["current_page"] = page_key
-            st.rerun()
-
-st.markdown("<hr style='margin-top: 8px; margin-bottom: 24px; border: none; border-bottom: 2px solid #e1e4e8;'>", unsafe_allow_html=True)
+active_page = PAGE_KEY_MAP[selected_menu]
 
 # ══════════════════════════════════════════════════════
 #  PAGE ROUTING
 # ══════════════════════════════════════════════════════
-active_page = st.session_state["current_page"]
 
 if active_page == "home":
     st.markdown(
