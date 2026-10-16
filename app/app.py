@@ -5,6 +5,7 @@ Light theme (forced) · Horizontal tabs · Schematic SVG icons
 
 from __future__ import annotations
 
+import base64
 import io
 import time
 from pathlib import Path
@@ -393,6 +394,13 @@ def confidence_color(conf: float) -> str:
     return "#cf222e"       # red
 
 
+def svg_to_img_tag(svg_str: str, alt: str = "") -> str:
+    if not svg_str:
+        return ""
+    b64 = base64.b64encode(svg_str.strip().encode("utf-8")).decode("utf-8")
+    return f'<img src="data:image/svg+xml;base64,{b64}" alt="{alt}" style="max-height:48px; max-width:84px; object-fit:contain;" />'
+
+
 # ══════════════════════════════════════════════════════
 #  TABS
 # ══════════════════════════════════════════════════════
@@ -452,13 +460,14 @@ with tab_home:
     cols5 = st.columns(5)
     for i, cls in enumerate(CLASS_DESC):
         with cols5[i % 5]:
-            svg  = COMPONENT_SVG.get(cls, "")
+            svg_raw = COMPONENT_SVG.get(cls, "")
+            img_tag = svg_to_img_tag(svg_raw, alt=cls)
             name = CLASS_DESC[cls]
             sub  = CLASS_SUBDESC[cls]
             st.markdown(
                 f"""<div class="comp-card">
                     <div style="display:flex;justify-content:center;align-items:center;height:52px;">
-                        {svg}
+                        {img_tag}
                     </div>
                     <div class="comp-name">{name}</div>
                     <div class="comp-desc">{sub}</div>
