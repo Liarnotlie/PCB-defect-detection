@@ -20,6 +20,30 @@ Giao diện ứng dụng được tổ chức thành 4 phân hệ chính:
 - **Hiệu suất mô hình:** Trình bày ma trận nhầm lẫn (confusion matrix), đồ thị hàm mất mát và bảng chỉ số mAP50, mAP50-95 theo từng linh kiện.
 - **Gallery mẫu:** Xem nhanh tập kết quả nhận diện mẫu trên tập kiểm thử (test set).
 
+### Ảnh demo ứng dụng
+
+Ảnh dưới đây minh họa ảnh PCB đầu vào và kết quả nhận diện do YOLO tạo ra:
+
+<table>
+  <tr>
+    <th>Ảnh PCB đầu vào</th>
+    <th>Kết quả nhận diện</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="../assest/demo/demo_input.jpg" alt="Ảnh PCB đầu vào" width="400"></td>
+    <td align="center"><img src="../assest/demo/demo_output.png" alt="Ảnh PCB sau khi YOLO nhận diện linh kiện" width="400"></td>
+  </tr>
+</table>
+
+Ảnh chụp giao diện cho thấy kết quả trên trang nhận diện và thông tin chi tiết của từng linh kiện:
+
+<table>
+  <tr>
+    <td align="center"><img src="../assest/demo/screenshot_detect_preview.png" alt="Giao diện nhận diện với ảnh gốc và ảnh kết quả" width="100%"></td>
+    <td align="center"><img src="../assest/demo/screenshot_detect_details.png" alt="Thống kê và bảng chi tiết kết quả nhận diện" width="100%"></td>
+  </tr>
+</table>
+
 ## 3. Hướng Dẫn Cài Đặt & Triển Khai (Deployment)
 1. **Cài đặt môi trường:**
    ```bash
