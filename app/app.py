@@ -76,44 +76,39 @@ st.markdown(
         max-width: 1200px;
     }
 
-    /* ── Tabs ── */
-    [data-testid="stTabs"] {
+    /* ── Top Navigation Bar ── */
+    .top-nav-bar {
+        display: flex;
+        align-items: center;
         background: #ffffff;
-        border-bottom: 1px solid #d0d7de;
+        border-bottom: 2px solid #e1e4e8;
+        padding: 4px 0 16px 0;
         margin-bottom: 24px;
+        gap: 8px;
     }
-    div[data-testid="stTabs"] button[role="tab"] {
-        background: transparent !important;
-        border-radius: 6px 6px 0 0 !important;
-        padding: 10px 20px !important;
-        border: none !important;
-    }
-    div[data-testid="stTabs"] button[role="tab"] p,
-    div[data-testid="stTabs"] button[role="tab"] div,
-    div[data-testid="stTabs"] button[role="tab"] span {
-        color: #24292f !important;
-        font-size: 1rem !important;
-        font-weight: 600 !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-    }
-    div[data-testid="stTabs"] button[role="tab"]:hover {
-        background: #f6f8fa !important;
-    }
-    div[data-testid="stTabs"] button[role="tab"]:hover p,
-    div[data-testid="stTabs"] button[role="tab"]:hover div,
-    div[data-testid="stTabs"] button[role="tab"]:hover span {
-        color: #0969da !important;
-    }
-    div[data-testid="stTabs"] button[role="tab"][aria-selected="true"] {
-        background: #f0f7ff !important;
-        border-bottom: 3px solid #0969da !important;
-    }
-    div[data-testid="stTabs"] button[role="tab"][aria-selected="true"] p,
-    div[data-testid="stTabs"] button[role="tab"][aria-selected="true"] div,
-    div[data-testid="stTabs"] button[role="tab"][aria-selected="true"] span {
-        color: #0969da !important;
+    div[data-testid="stHorizontalBlock"] button[kind="primary"] {
+        background-color: #0969da !important;
+        color: #ffffff !important;
+        border: 1px solid #0969da !important;
         font-weight: 700 !important;
+        font-size: 0.95rem !important;
+        padding: 8px 16px !important;
+        border-radius: 8px !important;
+        box-shadow: 0 2px 4px rgba(9,105,218,0.2) !important;
+    }
+    div[data-testid="stHorizontalBlock"] button[kind="secondary"] {
+        background-color: #f6f8fa !important;
+        color: #24292f !important;
+        border: 1px solid #d0d7de !important;
+        font-weight: 600 !important;
+        font-size: 0.95rem !important;
+        padding: 8px 16px !important;
+        border-radius: 8px !important;
+    }
+    div[data-testid="stHorizontalBlock"] button[kind="secondary"]:hover {
+        background-color: #eaeef2 !important;
+        color: #0969da !important;
+        border-color: #0969da !important;
     }
 
     /* ── Hero banner ── */
@@ -413,17 +408,37 @@ def svg_to_img_tag(svg_str: str, alt: str = "") -> str:
 
 
 # ══════════════════════════════════════════════════════
-#  TABS
+#  TOP NAVIGATION (Horizontal Button Bar)
 # ══════════════════════════════════════════════════════
-tab_home, tab_detect, tab_perf, tab_gallery = st.tabs(
-    ["🏠  Trang chủ", "🔍  Nhận diện", "📊  Hiệu suất mô hình", "🖼️  Gallery mẫu"]
-)
+PAGES = {
+    "home":    "🏠  Trang chủ",
+    "detect":  "🔍  Nhận diện",
+    "perf":    "📊  Hiệu suất mô hình",
+    "gallery": "🖼️  Gallery mẫu",
+}
 
+if "current_page" not in st.session_state:
+    st.session_state["current_page"] = "home"
+
+nav_c1, nav_c2, nav_c3, nav_c4 = st.columns(4)
+nav_cols = [nav_c1, nav_c2, nav_c3, nav_c4]
+
+for col, (page_key, page_title) in zip(nav_cols, PAGES.items()):
+    with col:
+        is_active = (st.session_state["current_page"] == page_key)
+        button_type = "primary" if is_active else "secondary"
+        if st.button(page_title, key=f"nav_btn_{page_key}", use_container_width=True, type=button_type):
+            st.session_state["current_page"] = page_key
+            st.rerun()
+
+st.markdown("<hr style='margin-top: 8px; margin-bottom: 24px; border: none; border-bottom: 2px solid #e1e4e8;'>", unsafe_allow_html=True)
 
 # ══════════════════════════════════════════════════════
-#  TAB: HOME
+#  PAGE ROUTING
 # ══════════════════════════════════════════════════════
-with tab_home:
+active_page = st.session_state["current_page"]
+
+if active_page == "home":
     st.markdown(
         """
         <div class="hero">
@@ -508,9 +523,9 @@ with tab_home:
 
 
 # ══════════════════════════════════════════════════════
-#  TAB: DETECT
+#  PAGE: DETECT
 # ══════════════════════════════════════════════════════
-with tab_detect:
+elif active_page == "detect":
     st.markdown('<div class="section-title">Nhận diện linh kiện PCB</div>', unsafe_allow_html=True)
 
     if not MODEL_PATH.is_file():
@@ -654,9 +669,9 @@ with tab_detect:
 
 
 # ══════════════════════════════════════════════════════
-#  TAB: PERFORMANCE
+#  PAGE: PERFORMANCE
 # ══════════════════════════════════════════════════════
-with tab_perf:
+elif active_page == "perf":
     st.markdown('<div class="section-title">Hiệu suất & Đánh giá mô hình</div>', unsafe_allow_html=True)
 
     st.markdown("### Cấu hình huấn luyện")
@@ -727,9 +742,9 @@ with tab_perf:
 
 
 # ══════════════════════════════════════════════════════
-#  TAB: GALLERY
+#  PAGE: GALLERY
 # ══════════════════════════════════════════════════════
-with tab_gallery:
+elif active_page == "gallery":
     st.markdown('<div class="section-title">Gallery kết quả nhận diện mẫu</div>', unsafe_allow_html=True)
     st.markdown(
         "<p style='color:#57606a;'>Kết quả nhận diện thực tế trên tập test — "
