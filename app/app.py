@@ -80,30 +80,41 @@ st.markdown(
     [data-testid="stTabs"] {
         background: #ffffff;
         border-bottom: 1px solid #d0d7de;
-        margin-bottom: 28px;
+        margin-bottom: 24px;
     }
-    button[data-baseweb="tab"] {
+    div[data-testid="stTabs"] button[role="tab"] {
         background: transparent !important;
-        color: #57606a !important;
-        font-size: .93rem !important;
-        font-weight: 500 !important;
         border-radius: 6px 6px 0 0 !important;
-        padding: 10px 22px !important;
+        padding: 10px 20px !important;
         border: none !important;
-        transition: color .15s, background .15s !important;
     }
-    button[data-baseweb="tab"]:hover {
-        color: #0969da !important;
+    div[data-testid="stTabs"] button[role="tab"] p,
+    div[data-testid="stTabs"] button[role="tab"] div,
+    div[data-testid="stTabs"] button[role="tab"] span {
+        color: #24292f !important;
+        font-size: 1rem !important;
+        font-weight: 600 !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    div[data-testid="stTabs"] button[role="tab"]:hover {
         background: #f6f8fa !important;
     }
-    button[data-baseweb="tab"][aria-selected="true"] {
+    div[data-testid="stTabs"] button[role="tab"]:hover p,
+    div[data-testid="stTabs"] button[role="tab"]:hover div,
+    div[data-testid="stTabs"] button[role="tab"]:hover span {
         color: #0969da !important;
-        background: #ffffff !important;
-        border-bottom: 2px solid #0969da !important;
+    }
+    div[data-testid="stTabs"] button[role="tab"][aria-selected="true"] {
+        background: #f0f7ff !important;
+        border-bottom: 3px solid #0969da !important;
+    }
+    div[data-testid="stTabs"] button[role="tab"][aria-selected="true"] p,
+    div[data-testid="stTabs"] button[role="tab"][aria-selected="true"] div,
+    div[data-testid="stTabs"] button[role="tab"][aria-selected="true"] span {
+        color: #0969da !important;
         font-weight: 700 !important;
     }
-    [data-testid="stTabs"] [data-baseweb="tab-highlight"] { background: transparent !important; }
-    [data-testid="stTabs"] [data-baseweb="tab-border"]    { background: #d0d7de !important; }
 
     /* ── Hero banner ── */
     .hero {
