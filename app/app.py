@@ -406,7 +406,7 @@ with st.sidebar:
         <div style="text-align: center; padding: 12px 0 20px 0;">
             <div style="font-size: 2.8rem; line-height: 1;">🔬</div>
             <h2 style="font-size: 1.25rem; font-weight: 700; color: #0969da; margin: 8px 0 2px 0;">PCB Detector</h2>
-            <p style="font-size: 0.8rem; color: #57606a; margin: 0;">YOLO26 Component Analysis</p>
+            <p style="font-size: 0.8rem; color: #57606a; margin: 0;">YOLO26n Component Analysis</p>
         </div>
         """,
         unsafe_allow_html=True,
@@ -459,7 +459,7 @@ if active_page == "home":
             <h1>🔬 PCB Component Detector</h1>
             <p>
                 Hệ thống nhận diện linh kiện điện tử trên bo mạch in (PCB)<br>
-                sử dụng mô hình <b>YOLO26</b> huấn luyện trên <b>460 ảnh</b> thực tế.
+                sử dụng mô hình <b>YOLO26n</b> huấn luyện trên <b>460 ảnh</b> thực tế.
             </p>
         </div>
         """,
@@ -521,7 +521,7 @@ if active_page == "home":
     pipe_steps = [
         ("📥", "Thu thập dữ liệu",   "460 ảnh PCB thực tế, gán nhãn bằng LabelImg"),
         ("🧹", "Tiền xử lý",         "Chuẩn hóa bbox, sửa 92 box lỗi, chia 80/10/10%"),
-        ("🧠", "Huấn luyện YOLO26",  "Transfer learning từ COCO, Mosaic + Mixup augmentation"),
+        ("🧠", "Huấn luyện YOLO26n",  "Transfer learning từ COCO, Mosaic + Mixup augmentation"),
         ("🔬", "Triển khai",          "Streamlit web app, chạy local, inference real-time"),
     ]
     for col, (icon, title, desc) in zip(pipe_cols, pipe_steps):
@@ -587,7 +587,7 @@ elif active_page == "detect":
         image = Image.open(uploaded_file).convert("RGB")
         model = load_model(str(MODEL_PATH))
 
-        with st.spinner("Đang phân tích ảnh với YOLO26…"):
+        with st.spinner("Đang phân tích ảnh với YOLO26n…"):
             t0     = time.perf_counter()
             result = model.predict(image, conf=confidence, iou=iou, verbose=False)[0]
             elapsed_ms = (time.perf_counter() - t0) * 1000
