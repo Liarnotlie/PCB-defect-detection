@@ -406,7 +406,7 @@ with st.sidebar:
         <div style="text-align: center; padding: 12px 0 20px 0;">
             <div style="font-size: 2.8rem; line-height: 1;">🔬</div>
             <h2 style="font-size: 1.25rem; font-weight: 700; color: #0969da; margin: 8px 0 2px 0;">PCB Detector</h2>
-            <p style="font-size: 0.8rem; color: #57606a; margin: 0;">YOLOv8 Component Analysis</p>
+            <p style="font-size: 0.8rem; color: #57606a; margin: 0;">YOLO26 Component Analysis</p>
         </div>
         """,
         unsafe_allow_html=True,
@@ -432,7 +432,7 @@ with st.sidebar:
         """
         <div style="font-size: 0.78rem; color: #57606a; line-height: 1.6;">
             <b>Thông tin hệ thống:</b><br>
-            • Mô hình: YOLOv8n (COCO Transfer)<br>
+            • Mô hình: YOLO26n (COCO Transfer)<br>
             • Số lớp nhận diện: 10 linh kiện<br>
             • Dữ liệu: 460 bo mạch in
         </div>
@@ -459,7 +459,7 @@ if active_page == "home":
             <h1>🔬 PCB Component Detector</h1>
             <p>
                 Hệ thống nhận diện linh kiện điện tử trên bo mạch in (PCB)<br>
-                sử dụng mô hình <b>YOLOv8</b> huấn luyện trên <b>460 ảnh</b> thực tế.
+                sử dụng mô hình <b>YOLO26</b> huấn luyện trên <b>460 ảnh</b> thực tế.
             </p>
         </div>
         """,
@@ -474,7 +474,7 @@ if active_page == "home":
             <div class="stat-pill"><div class="val">10</div><div class="lbl">Loại linh kiện</div></div>
             <div class="stat-pill"><div class="val">100</div><div class="lbl">Epochs</div></div>
             <div class="stat-pill"><div class="val">640px</div><div class="lbl">Kích thước input</div></div>
-            <div class="stat-pill"><div class="val">YOLOv8n</div><div class="lbl">Kiến trúc</div></div>
+            <div class="stat-pill"><div class="val">YOLO26n</div><div class="lbl">Kiến trúc</div></div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -521,7 +521,7 @@ if active_page == "home":
     pipe_steps = [
         ("📥", "Thu thập dữ liệu",   "460 ảnh PCB thực tế, gán nhãn bằng LabelImg"),
         ("🧹", "Tiền xử lý",         "Chuẩn hóa bbox, sửa 92 box lỗi, chia 80/10/10%"),
-        ("🧠", "Huấn luyện YOLOv8",  "Transfer learning từ COCO, Mosaic + Mixup augmentation"),
+        ("🧠", "Huấn luyện YOLO26",  "Transfer learning từ COCO, Mosaic + Mixup augmentation"),
         ("🔬", "Triển khai",          "Streamlit web app, chạy local, inference real-time"),
     ]
     for col, (icon, title, desc) in zip(pipe_cols, pipe_steps):
@@ -587,7 +587,7 @@ elif active_page == "detect":
         image = Image.open(uploaded_file).convert("RGB")
         model = load_model(str(MODEL_PATH))
 
-        with st.spinner("Đang phân tích ảnh với YOLOv8…"):
+        with st.spinner("Đang phân tích ảnh với YOLO26…"):
             t0     = time.perf_counter()
             result = model.predict(image, conf=confidence, iou=iou, verbose=False)[0]
             elapsed_ms = (time.perf_counter() - t0) * 1000
@@ -693,7 +693,7 @@ elif active_page == "perf":
     with p1:
         st.markdown("""<div class="card">
             <h3>Kiến trúc</h3>
-            <p><b>YOLOv8 Nano (yolov8n)</b><br>
+            <p><b>YOLO26 Nano (yolo26n)</b><br>
             Pretrained trên COCO (transfer learning)<br>Input: 640×640 px</p>
         </div>""", unsafe_allow_html=True)
     with p2:
